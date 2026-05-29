@@ -78,7 +78,7 @@ def load_data(input_path: str) -> pd.DataFrame:
     else:
         raise ValueError("Only .csv and .parquet files are supported")
 
-    logger.info("Loaded dataset with shape: %s", df.shape)
+    logger.info("Loaded dataset with shaps: %s", df.shape)
     
     return df
 
@@ -183,7 +183,7 @@ def build_pipeline() -> Pipeline:
     df_select_columns = RFECV(
         estimator=xg.XGBRFRegressor(
             random_state=RANDOM_STATE,
-            n_estimators=300,
+            n_estimators=150,
             n_jobs=-1,
         ),
         step=0.1,
@@ -202,7 +202,7 @@ def build_pipeline() -> Pipeline:
             random_state=RANDOM_STATE,
             n_jobs=-1,
             bootstrap=True,
-            n_estimators=300,
+            n_estimators=150,
         )),
     ])
 
@@ -274,7 +274,7 @@ def save_artifact(model: Pipeline, metadata: dict, output_path: str) -> None:
         "metadata": metadata,
     }
 
-    joblib.dump(artifact, output_path)
+    joblib.dump(artifact, output_path,compress=("lzma", 9))
     logger.info("Saved model artifact to: %s", output_path)
 
 
